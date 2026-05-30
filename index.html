@@ -89,7 +89,8 @@ button {
   
 <button onclick="iniciarCamara()">
 Activar cámara
-
+</button>
+  
 <button onclick="reproducirBeep()">
 Probar sonido  
 </button>
@@ -104,6 +105,34 @@ Probar sonido
   
 const URL_API =
 "https://script.google.com/macros/s/AKfycbzTgCn8MqS0Tn6gR55QHNxckAS96JR_SvbiEKO8CvkDbafLqPkxaqiktcv518ULlE47/exec";
+
+async function cargarBloqueActual() {
+
+  try {
+
+    const resp = await fetch(
+      URL_API + "?accion=bloque"
+    );
+
+    const data =
+      await resp.json();
+
+    document
+      .getElementById("bloqueActual")
+      .innerHTML =
+      "📋 Bloque actual: " +
+      data.bloque;
+
+  } catch(err) {
+
+    document
+      .getElementById("bloqueActual")
+      .innerHTML =
+      "⚠️ No se pudo leer el bloque";
+
+  }
+
+}
 
 async function probarAPI() {
 
@@ -280,6 +309,12 @@ function reproducirBeep() {
   }
 
 }
+
+window.onload = function() {
+
+  cargarBloqueActual();
+
+};
   
 </script>
 
