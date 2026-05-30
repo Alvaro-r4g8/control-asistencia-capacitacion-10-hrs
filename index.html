@@ -9,18 +9,10 @@
 
 <body>
 
-<h2>Control de Asistencia</h2>
+<h2>Asistencia Curso de Liderazgo 10 hrs</h2>
 
 <button onclick="iniciarCamara()">
 Activar cámara
-</button>
-  
-<button onclick="probarAPI()">
-Probar API
-</button>
-
-<button onclick="alert('API OK')">
-Prueba rápida
 </button>
   
 <div id="reader" style="width:350px;"></div>
@@ -70,6 +62,9 @@ async function probarAPI() {
   
 let iniciado = false;
 
+let ultimoEscaneo = "";
+let ultimoTiempo = 0;  
+
 async function iniciarCamara() {
 
   if(iniciado) return;
@@ -100,49 +95,53 @@ async function iniciarCamara() {
 
 async function registrar(id){
 
+  const ahora = Date.now();
+
+if(
+  id === ultimoEscaneo &&
+  ahora - ultimoTiempo < 5000
+){
+  return;
+}
+
+ultimoEscaneo = id;
+ultimoTiempo = ahora;
   try{
 
-    const resp =
-      await fetch(URL_API,{
+    await fetch(URL_API,{
 
-        method:"POST",
+      method:"POST",
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+      mode:"no-cors",
 
-        body:JSON.stringify({
-          id:id
-        })
+      headers:{
+        "Content-Type":"application/json"
+      },
 
-      });
+      body:JSON.stringify({
+        id:id
+      })
 
-    const data =
-      await resp.json();
+    });
 
     document
-      .getElementById("resultado")
+      .getElementById("estado")
       .innerHTML =
-      data.mensaje;
+      "✅ ASISTENCIA REGISTRADA";
 
-    if(data.ok){
-
-      document
+    document
       .getElementById("detalle")
       .innerHTML =
+      "Código: " + id;
 
-      `<b>${data.participante.nombre}</b>
-      <br>
-      ${data.participante.club}
-      <br>
-      Bloque:
-      ${data.bloque}`;
-
-    }
+    reproducirBeep();
 
   }catch(err){
 
-    console.error(err);
+    document
+      .getElementById("estado")
+      .innerHTML =
+      "❌ ERROR";
 
   }
 
@@ -150,5 +149,15 @@ async function registrar(id){
 
 </script>
 
+  function reproducirBeep(){
+
+  const audio =
+    new Audio(
+      "https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"
+    );
+
+  audio.play();
+
+}
 </body>
 </html>
