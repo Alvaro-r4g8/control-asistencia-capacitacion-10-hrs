@@ -18,6 +18,10 @@ Activar cámara
 <button onclick="probarAPI()">
 Probar API
 </button>
+
+<button onclick="alert('API OK')">
+Prueba rápida
+</button>
   
 <div id="reader" style="width:350px;"></div>
 
@@ -71,9 +75,6 @@ async function probarAPI() {
 }
   
 let iniciado = false;
-
-const URL_API =
-"https://script.google.com/macros/s/AKfycbzTgCn8MqS0Tn6gR55QHNxckAS96JR_SvbiEKO8CvkDbafLqPkxaqiktcv518ULlE47/exec";
 
 async function iniciarCamara() {
 
