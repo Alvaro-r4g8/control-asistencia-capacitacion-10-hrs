@@ -84,16 +84,11 @@ async function iniciarCamara() {
     fps:10,
     qrbox:250
   },
-  (decodedText) => {
+ (decodedText) => {
 
-    alert(
-      "QR leído:\n\n" +
-      decodedText
-    );
+  registrar(decodedText);
 
-    registrar(decodedText);
-
-  }
+}
 );
 
   } catch(err){
@@ -136,7 +131,7 @@ ultimoTiempo = ahora;
     document
       .getElementById("estado")
       .innerHTML =
-      "✅ ASISTENCIA REGISTRADA";
+      "✅ REGISTRO EXITOSO";
 
     document
       .getElementById("detalle")
@@ -145,6 +140,18 @@ ultimoTiempo = ahora;
 
     reproducirBeep();
 
+    setTimeout(() => {
+
+  document
+    .getElementById("estado")
+    .innerHTML = "";
+
+  document
+    .getElementById("detalle")
+    .innerHTML = "";
+
+}, 3000);
+    
   }catch(err){
 
     document
