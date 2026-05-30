@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Control de Asistencia</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+
+<body>
+
+<h2>Control de Asistencia</h2>
+
+<button onclick="iniciarCamara()">
+Activar cámara
+</button>
+
+<div id="reader" style="width:350px;"></div>
+
+<h3 id="resultado"></h3>
+
+<div id="detalle"></div>
+
+<script>
+
+let iniciado = false;
+
+const URL_API =
+"https://script.google.com/macros/s/AKfycbzTgCn8MqS0Tn6gR55QHNxckAS96JR_SvbiEKO8CvkDbafLqPkxaqiktcv518ULlE47/exec";
+
+async function iniciarCamara() {
+
+  if(iniciado) return;
+
+  iniciado = true;
+
+  const qr =
+    new Html5Qrcode("reader");
+
+  try {
+
+    await qr.start(
+      {
+        facingMode:"environment"
+      },
+      {
+        fps:10,
+        qrbox:250
+      },
+      registrar
+    );
+
+  } catch(err){
+
+    alert(err);
+  }
+}
+
+async function registrar(id){
+
+  try{
+
+    const resp =
+      await fetch(URL_API,{
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+          id:id
+        })
+
+      });
+
+    const data =
+      await resp.json();
+
+    document
+      .getElementById("resultado")
+      .innerHTML =
+      data.mensaje;
+
+    if(data.ok){
+
+      document
+      .getElementById("detalle")
+      .innerHTML =
+
+      `<b>${data.participante.nombre}</b>
+      <br>
+      ${data.participante.club}
+      <br>
+      Bloque:
+      ${data.bloque}`;
+
+    }
+
+  }catch(err){
+
+    console.error(err);
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
