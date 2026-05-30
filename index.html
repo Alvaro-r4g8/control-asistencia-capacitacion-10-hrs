@@ -76,16 +76,25 @@ async function iniciarCamara() {
 
   try {
 
-    await qr.start(
-      {
-        facingMode:"environment"
-      },
-      {
-        fps:10,
-        qrbox:250
-      },
-      registrar
+  await qr.start(
+  {
+    facingMode:"environment"
+  },
+  {
+    fps:10,
+    qrbox:250
+  },
+  (decodedText) => {
+
+    alert(
+      "QR leído:\n\n" +
+      decodedText
     );
+
+    registrar(decodedText);
+
+  }
+);
 
   } catch(err){
 
