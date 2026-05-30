@@ -14,6 +14,7 @@
 <button onclick="iniciarCamara()">
 Activar cámara
 </button>
+  
 <button onclick="probarAPI()">
 Probar API
 </button>
@@ -25,7 +26,42 @@ Probar API
 <div id="detalle"></div>
 
 <script>
+  
+const URL_API =
+"https://script.google.com/macros/s/AKfycbzTgCn8MqS0Tn6gR55QHNxckAS96JR_SvbiEKO8CvkDbafLqPkxaqiktcv518ULlE47/exec";
 
+  async function probarAPI() {
+
+  try {
+
+    const resp = await fetch(
+      URL_API,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          id: "CAP001"
+        })
+
+      }
+    );
+
+    const data = await resp.json();
+
+    alert(JSON.stringify(data));
+
+  } catch(err) {
+
+    alert("ERROR:\n" + err);
+
+  }
+
+}
+  
 let iniciado = false;
 
 const URL_API =
