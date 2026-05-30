@@ -40,12 +40,11 @@ async function probarAPI() {
 
   try {
 
-    alert("Voy a llamar Apps Script");
-
     const resp = await fetch(
       URL_API,
       {
         method: "POST",
+        mode: "no-cors",
         headers: {
           "Content-Type": "application/json"
         },
@@ -55,16 +54,11 @@ async function probarAPI() {
       }
     );
 
-    alert("Apps Script respondió");
-
-    const texto = await resp.text();
-
-    alert(texto);
+    alert("Petición enviada");
 
   } catch(err) {
 
     alert(
-      "ERROR\n\n" +
       err.name +
       "\n\n" +
       err.message
